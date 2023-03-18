@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/alexbacchin/ConnectorBridgeAPI/pkg/shadeconnector"
+	"github.com/alexbacchin/ConnectorBridgeCLI/pkg/shadeconnector"
 )
 
 var version = "0.0.1"
@@ -14,10 +14,10 @@ var host, port, apiKey string
 
 var rootCmd = &cobra.Command{
 	Use:     "sconnector-cli",
-	Version: version, //-ldflags="-X 'github.com/ThorstenHans/stringer/cmd/stringer.version=0.0.2'"
+	Version: version,
 	Short:   "ShadeConnector command line utility",
 	Long: `A command line utility to operate Dooyaa ShadeConnector blinds and other products
-				  https://github.com/alexbacchin/ShadeConnectorAPI/`,
+				  https://github.com/alexbacchin/ShadeConnectorCLI/`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("SharedConnector CLI")
 	},

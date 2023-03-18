@@ -24,4 +24,4 @@ jobs:
         run: go mod download
 
       - name: Build
-        run: go build . 
+        run: go build -ldflags="-X 'github.com/alexbacchin/ConnectorBridgeCLI/cmd/version=0.0.1'" .

@@ -6,7 +6,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/alexbacchin/ConnectorBridgeAPI/web"
+	"github.com/alexbacchin/ConnectorBridgeCLI/web"
 	"github.com/spf13/cobra"
 )
 

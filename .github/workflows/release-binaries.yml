@@ -28,9 +28,10 @@ jobs:
         goarch: ${{ matrix.goarch }}
         goversion: "https://go.dev/dl/go1.19.7.linux-amd64.tar.gz"
         binary_name: "sconnector-cli"
+        ldflags: "-X 'github.com/alexbacchin/ConnectorBridgeCLI/cmd.version=${{  github.ref_name }}'"
         
   releases-matrix-arm:
-    name: Release Go Binary
+    name: Release Go Binary ARM
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -47,3 +48,4 @@ jobs:
         goarm: ${{ matrix.goarm }}
         goversion: "https://go.dev/dl/go1.19.7.linux-amd64.tar.gz"
         binary_name: "sconnector-cli"        
+        ldflags: "-X 'github.com/alexbacchin/ConnectorBridgeCLI/cmd.version=${{  github.ref_name }}'"

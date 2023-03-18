@@ -1,4 +1,4 @@
-module github.com/alexbacchin/ConnectorBridgeAPI
+module github.com/alexbacchin/ConnectorBridgeCLI
 
 go 1.19
 

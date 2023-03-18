@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/alexbacchin/ConnectorBridgeAPI/pkg/shadeconnector"
+	"github.com/alexbacchin/ConnectorBridgeCLI/pkg/shadeconnector"
 	"github.com/spf13/cobra"
 )
 
