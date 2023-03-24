@@ -20,13 +20,13 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.PersistentFlags().StringVar(&host, "host", os.Getenv("CONNECTOR_BRIDGE_HOST"), "The hostname of IP address of the Connector Bridge. Default 238.0.0.18")
-	rootCmd.PersistentFlags().StringVar(&port, "port", os.Getenv("CONNECTOR_BRIDGE_PORT"), "The port for the Connector Bridge connection. Default 31200")
+	rootCmd.PersistentFlags().StringVar(&port, "port", os.Getenv("CONNECTOR_BRIDGE_PORT"), "The port for the Connector Bridge connection. Default 32100")
 	rootCmd.PersistentFlags().StringVar(&apiKey, "apikey", os.Getenv("CONNECTOR_BRIDGE_APIKEY"), "The ApiKey from Connector Bridge. On the mobile app: Go to Settings (gear), About. Tap 5 times on the screen")
 }
 
 func Execute() {
 	if port == "" {
-		port = "31200"
+		port = "32100"
 	}
 	if host == "" {
 		host = "238.0.0.18"

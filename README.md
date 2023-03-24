@@ -40,7 +40,7 @@ This ConnectorBridgeCLI integration allows you to control the following brands:
 The default communication is via Multicast, but it might not work on your network.  You can override with the Bridge IP address.
 
 1. Find your bridge IP address. You might need to look at your router 
-2. The bridge port is set to 31200. Unlikely the default value needs to be changed
+2. The bridge port is set to 32100. Unlikely the default value needs to be changed
 3. Retrieve the API key from the mobile app. Settings -> About -> Tap 5 times anywhere on the screen
 4. Devices IDs are usually the same as set on the remote control. 
 5. Download the executable from [Releases](https://github.com/alexbacchin/ConnectorBridgeCLI/releases) page
@@ -49,11 +49,11 @@ The default communication is via Multicast, but it might not work on your networ
 Flag | Environment Variable | Description  |
 |--|--|--|
 | --host |CONNECTOR_BRIDGE_HOST  | The hostname of IP address of the Connector Bridge -0 |
-| --port |CONNECTOR_BRIDGE_PORT  | The port for the Connector Bridge connection. Default 31200 |
+| --port |CONNECTOR_BRIDGE_PORT  | The port for the Connector Bridge connection. Default 32100 |
 | --apikey | CONNECTOR_BRIDGE_APIKEY | The ApiKey to authenticate with Connector Bridge |
 
 ```bash 
-sconnector-cli <command> <device_id> --host=192.168.0.189 --apikey=<Bridge API key> --port=31200
+sconnector-cli <command> <device_id> --host=192.168.0.189 --apikey=<Bridge API key> --port=32100
 ```
 ```bash 
 export CONNECTOR_BRIDGE_HOST=192.168.0.189
