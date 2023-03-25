@@ -25,7 +25,7 @@ var stopCmd = &cobra.Command{
 			return
 		}
 		shadeconnector.Operation(device_id, int(shadeconnector.Stop))
-		fmt.Printf("Open device %s sucessfully", args[0])
+		fmt.Printf("Stop device %s sucessfully", args[0])
 		fmt.Println()
 	},
 }

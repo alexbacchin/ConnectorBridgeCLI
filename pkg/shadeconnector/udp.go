@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
-	"os"
 	"strconv"
 	"time"
 
@@ -78,22 +77,22 @@ func Init(host string, port string, apikey string) {
 	cfg.ApiKey = apikey
 }
 
-func sendMessage(payload []byte, host string, port string) []byte {
+func sendMessage(payload []byte, host string, port string) ([]byte, error) {
 	udpServer, err := net.ResolveUDPAddr("udp", fmt.Sprintf("%s:%s", host, port))
 	if err != nil {
 		println("ResolveUDPAddr failed:", err.Error())
-		os.Exit(1)
+		return nil, err
 	}
 	conn, err := net.DialUDP("udp", nil, udpServer)
 	if err != nil {
 		println("Connection failed:", err.Error())
-		os.Exit(1)
+		return nil, err
 	}
 
 	_, err = conn.Write(payload)
 	if err != nil {
 		println("Write data failed:", err.Error())
-		os.Exit(1)
+		return nil, err
 	}
 
 	// buffer to get data
@@ -102,31 +101,33 @@ func sendMessage(payload []byte, host string, port string) []byte {
 	_, err = conn.Read(received)
 	if err != nil {
 		println("Read data failed:", err.Error())
-		os.Exit(1)
+		return nil, err
 	}
 
 	//close the connection
 	defer conn.Close()
-	return received
+	return received, nil
 }
 
-func GetDevices() GetDeviceListAckMessage {
+func GetDevices() (*GetDeviceListAckMessage, error) {
 	gdl := GetDeviceListMessage{"GetDeviceList", makeTimestamp()}
 	payload, err := json.Marshal(gdl)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	received := bytes.Trim(sendMessage([]byte(payload), cfg.Host, cfg.Port), "\x00")
+	received, err := sendMessage([]byte(payload), cfg.Host, cfg.Port)
+
+	received_trimmed := bytes.Trim(received, "\x00")
 	var gdla GetDeviceListAckMessage
-	err = json.Unmarshal(received, &gdla)
+	err = json.Unmarshal(received_trimmed, &gdla)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	cfg.Token = gdla.Token
-	return gdla
+	return &gdla, nil
 }
 
-func ReadDevice(mac string, deviceType string) DeviceStatusMessage {
+func ReadDevice(mac string, deviceType string) (*DeviceStatusMessage, error) {
 	if deviceType == "" {
 		deviceType = "10000000"
 	}
@@ -138,19 +139,23 @@ func ReadDevice(mac string, deviceType string) DeviceStatusMessage {
 
 	payload, err := json.Marshal(&readDeviceMessage)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	received := bytes.Trim(sendMessage([]byte(payload), cfg.Host, cfg.Port), "\x00")
-	var deviceStatus DeviceStatusMessage
-	err = json.Unmarshal(received, &deviceStatus)
+	received, err := sendMessage([]byte(payload), cfg.Host, cfg.Port)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return deviceStatus
+	received_trimmed := bytes.Trim(received, "\x00")
+	var deviceStatus DeviceStatusMessage
+	err = json.Unmarshal(received_trimmed, &deviceStatus)
+	if err != nil {
+		return nil, err
+	}
+	return &deviceStatus, nil
 
 }
 
-func WriteDeviceOperation(operation int, mac string, deviceType string) DeviceStatusMessage {
+func WriteDeviceOperation(operation int, mac string, deviceType string) (*DeviceStatusMessage, error) {
 	if deviceType == "" {
 		deviceType = "10000000"
 	}
@@ -160,11 +165,15 @@ func WriteDeviceOperation(operation int, mac string, deviceType string) DeviceSt
 	writeDeviceMessage.Data = make(map[string]interface{}, 1)
 	writeDeviceMessage.Data["operation"] = operation
 
-	return writeDevice(&writeDeviceMessage)
+	wdam, err := writeDevice(&writeDeviceMessage)
+	if err != nil {
+		return nil, err
+	}
+	return wdam, nil
 
 }
 
-func WriteDeviceTargetPosition(targetPosition int, mac string, deviceType string) DeviceStatusMessage {
+func WriteDeviceTargetPosition(targetPosition int, mac string, deviceType string) (*DeviceStatusMessage, error) {
 	if deviceType == "" {
 		deviceType = "10000000"
 	}
@@ -174,11 +183,15 @@ func WriteDeviceTargetPosition(targetPosition int, mac string, deviceType string
 	writeDeviceMessage.Data = make(map[string]interface{}, 1)
 	writeDeviceMessage.Data["targetPosition"] = targetPosition
 
-	return writeDevice(&writeDeviceMessage)
+	wdam, err := writeDevice(&writeDeviceMessage)
+	if err != nil {
+		return nil, err
+	}
+	return wdam, nil
 
 }
 
-func WriteDeviceTargetAngle(targetAngle int, mac string, deviceType string) DeviceStatusMessage {
+func WriteDeviceTargetAngle(targetAngle int, mac string, deviceType string) (*DeviceStatusMessage, error) {
 	if deviceType == "" {
 		deviceType = "10000000"
 	}
@@ -188,26 +201,34 @@ func WriteDeviceTargetAngle(targetAngle int, mac string, deviceType string) Devi
 	writeDeviceMessage.Data = make(map[string]interface{}, 1)
 	writeDeviceMessage.Data["targetAngle"] = targetAngle
 
-	return writeDevice(&writeDeviceMessage)
+	wdam, err := writeDevice(&writeDeviceMessage)
+	if err != nil {
+		return nil, err
+	}
+	return wdam, nil
 
 }
 
-func writeDevice(writeDeviceMessage *WriteDeviceMessage) DeviceStatusMessage {
+func writeDevice(writeDeviceMessage *WriteDeviceMessage) (*DeviceStatusMessage, error) {
 	writeDeviceMessage.MsgType = "WriteDevice"
 	writeDeviceMessage.MsgID = makeTimestamp()
 	writeDeviceMessage.AccessToken = calculateAccessToken()
 
 	payload, err := json.Marshal(&writeDeviceMessage)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	received := bytes.Trim(sendMessage([]byte(payload), cfg.Host, cfg.Port), "\x00")
-	var wdam DeviceStatusMessage
-	err = json.Unmarshal(received, &wdam)
+
+	received, err := sendMessage([]byte(payload), cfg.Host, cfg.Port)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return wdam
+	var wdam DeviceStatusMessage
+	err = json.Unmarshal(bytes.Trim(received, "\x00"), &wdam)
+	if err != nil {
+		return nil, err
+	}
+	return &wdam, nil
 
 }
 

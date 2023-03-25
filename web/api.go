@@ -23,9 +23,13 @@ func open(c *gin.Context) {
 		fmt.Printf("device ID must me a number: %s", err)
 		return
 	}
-	if shadeconnector.Operation(device_id, int(shadeconnector.Open)) != nil {
+	message, err := shadeconnector.Operation(device_id, int(shadeconnector.Open))
+	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
 	}
+	c.JSON(http.StatusOK, message)
+
 }
 
 func close(c *gin.Context) {
@@ -34,9 +38,12 @@ func close(c *gin.Context) {
 		fmt.Printf("device ID must me a number: %s", err)
 		return
 	}
-	if shadeconnector.Operation(device_id, int(shadeconnector.Close)) != nil {
+	message, err := shadeconnector.Operation(device_id, int(shadeconnector.Close))
+	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
 	}
+	c.JSON(http.StatusOK, message)
 }
 
 func stop(c *gin.Context) {
@@ -45,9 +52,12 @@ func stop(c *gin.Context) {
 		fmt.Printf("device ID must me a number: %s", err)
 		return
 	}
-	if shadeconnector.Operation(device_id, int(shadeconnector.Stop)) != nil {
+	message, err := shadeconnector.Operation(device_id, int(shadeconnector.Stop))
+	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
 	}
+	c.JSON(http.StatusOK, message)
 }
 func position(c *gin.Context) {
 	device_id, err := strconv.Atoi(c.Param("id"))
@@ -60,9 +70,12 @@ func position(c *gin.Context) {
 		fmt.Printf("postion must me a number between 0 and 100: %s", err)
 		return
 	}
-	if shadeconnector.SetPosition(device_id, position) != nil {
+	message, err := shadeconnector.SetPosition(device_id, position)
+	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
 	}
+	c.JSON(http.StatusOK, message)
 }
 
 func ApiKeyAuthAuthMiddleware() gin.HandlerFunc {
