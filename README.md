@@ -51,6 +51,8 @@ Flag | Environment Variable | Description  |
 | --host |CONNECTOR_BRIDGE_HOST  | The hostname of IP address of the Connector Bridge -0 |
 | --port |CONNECTOR_BRIDGE_PORT  | The port for the Connector Bridge connection. Default 32100 |
 | --apikey | CONNECTOR_BRIDGE_APIKEY | The ApiKey to authenticate with Connector Bridge |
+| --simple-status | N/A | Return just the position as status, not the whole status |
+| --invert | N/A | Invert the position paramenter to adjust to existing integrations |
 
 ```bash 
 sconnector-cli <command> <device_id> --host=192.168.0.189 --apikey=<Bridge API key> --port=32100
