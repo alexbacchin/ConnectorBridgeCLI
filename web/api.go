@@ -59,6 +59,21 @@ func stop(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, message)
 }
+
+func status(c *gin.Context) {
+	device_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		fmt.Printf("device ID must me a number: %s", err)
+		return
+	}
+	message, err := shadeconnector.QueryStatus(device_id)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+	c.JSON(http.StatusOK, message)
+}
+
 func position(c *gin.Context) {
 	device_id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -103,6 +118,7 @@ func Serve() {
 	router.GET("/open/:id", open)
 	router.GET("/close/:id", close)
 	router.GET("/stop/:id", stop)
+	router.GET("/status/:id", status)
 	router.GET("/position/:id/:position", position)
 
 	router.Run(fmt.Sprintf(":%s", ServerPort))
