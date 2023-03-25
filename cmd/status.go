@@ -19,7 +19,7 @@ var statusCmd = &cobra.Command{
 	Use:   "status [device id]",
 	Short: "Returns device status",
 	Long:  `Returns device status, including position, batery, etc.`,
-	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
 		shadeconnector.Init(host, port, apiKey)
 		device_id, err := strconv.Atoi(args[0])

@@ -63,12 +63,13 @@ sconnector-cli <command> <device_id>
 ## Commands
 The following commands were added on this:
 
-### Open, Close and Stop
+### Open, Close, Stop and Status
 Send the command to the device
 ```
 sconnector-cli open 1 --host=192.168.0.189 --apikey=<Bridge API key> 
 sconnector-cli stop 1 --host=192.168.0.189 --apikey=<Bridge API key> 
 sconnector-cli close 1 --host=192.168.0.189 --apikey=<Bridge API key> 
+sconnector-cli status 1 --host=192.168.0.189 --apikey=<Bridge API key> 
 ```
 ### Set Position
 Send the command to set the position  the device. Position must be between 0 and 100

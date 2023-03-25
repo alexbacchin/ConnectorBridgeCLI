@@ -16,7 +16,7 @@ var setpositionCmd = &cobra.Command{
 	Use:   "set-position [device id] [position]",
 	Short: "Send the postion to a Device",
 	Long:  `Send the postion to the device via the UDP.`,
-	Args:  cobra.MatchAll(cobra.ExactArgs(2), cobra.OnlyValidArgs),
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(2), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
 		shadeconnector.Init(host, port, apiKey)
 		device_id, err := strconv.Atoi(args[0])
