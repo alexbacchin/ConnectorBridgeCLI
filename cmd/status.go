@@ -12,8 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var position_only, invert_position bool
-
 // openCmd represents the open command
 var statusCmd = &cobra.Command{
 	Use:   "status [device id]",
@@ -32,29 +30,30 @@ var statusCmd = &cobra.Command{
 			fmt.Printf("Cannot execute the operation to device:%d, error: %s", device_id, err.Error())
 			return
 		}
-		if position_only {
-			position := message.CurrentPosition
-			if invert_position {
-				fmt.Println(100 - position)
-				return
-			} else {
-				fmt.Println(position)
-				return
-			}
-		}
-		output, err := json.Marshal(message)
-		if err != nil {
-			fmt.Printf("Cannot covert message: %s", err.Error())
-			return
-		}
-		fmt.Println(string(output))
+		PrintStatus(message)
 
 	},
 }
 
 func init() {
-	statusCmd.Flags().BoolVar(&position_only, "position-only", false, "Return the position of the device")
-	statusCmd.Flags().BoolVar(&invert_position, "invert", false, "Return the position of the device")
 	rootCmd.AddCommand(statusCmd)
+}
 
+func PrintStatus(message *shadeconnector.DeviceStatus) {
+	if simple_status {
+		position := message.CurrentPosition
+		if invert {
+			fmt.Println(100 - position)
+			return
+		} else {
+			fmt.Println(position)
+			return
+		}
+	}
+	output, err := json.Marshal(message)
+	if err != nil {
+		fmt.Printf("Cannot covert message: %s", err.Error())
+		return
+	}
+	fmt.Println(string(output))
 }

@@ -24,9 +24,12 @@ var openCmd = &cobra.Command{
 			fmt.Printf("device ID must me a number: %s", err)
 			return
 		}
-		shadeconnector.Operation(device_id, int(shadeconnector.Open))
-		fmt.Printf("Open device %s sucessfully", args[0])
-		fmt.Println()
+		message, err := shadeconnector.Operation(device_id, int(shadeconnector.Open))
+		if err != nil {
+			fmt.Printf("Cannot execute the operation to device:%d, error: %s", device_id, err.Error())
+			return
+		}
+		PrintStatus(message)
 	},
 }
 
