@@ -29,6 +29,9 @@ var setpositionCmd = &cobra.Command{
 			fmt.Printf("postion must me a number between 0 and 100: %s", err)
 			return
 		}
+		if invert {
+			position = 100 - position
+		}
 		message, err := shadeconnector.SetPosition(device_id, position)
 		if err != nil {
 			fmt.Printf("Cannot execute the operation to device:%d, error: %s", device_id, err.Error())
