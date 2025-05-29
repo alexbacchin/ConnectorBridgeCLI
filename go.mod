@@ -1,8 +1,6 @@
 module github.com/alexbacchin/ConnectorBridgeCLI
 
-
-go 1.23
-
+go 1.24.0
 
 toolchain go1.24.2
 
@@ -15,7 +13,6 @@ require (
 require (
 	github.com/bytedance/sonic v1.13.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
-	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect
