@@ -3,7 +3,7 @@
 ##
 ARG SCONNECTOR_CLI_VERSION=0.0.1 
 # specify the base image to  be used for the application, alpine or ubuntu
-FROM golang:1.19-alpine AS build
+FROM golang:1.24-alpine AS build
 
 # create a working directory inside the image
 WORKDIR /app
